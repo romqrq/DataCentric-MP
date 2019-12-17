@@ -2,18 +2,16 @@ import os
 from flask import Flask, render_template, redirect, request, url_for
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
+
 #MongoDB Stores its data in a JSON-like format called BSON so we are importing this from the
 #BSON library.
 
 #After importing the Flask functionality, we need to create an instance of Flask or Flask app
 app = Flask(__name__)
-
-
-
 #Adding the MONGO DATABASE NAME and the URL linking to that database
 app.config["MONGO_DBNAME"] = 'task_manager'
-app.config["MONGO_URI"] = 'mongodb+srv://root:R0mul0ng0u5@myfirstcluster-reumj.mongodb.net/task_manager?retryWrites=true&w=majority'
-
+# app.config["MONGO_URI"] = 'mongodb+srv://root:R0mul0ng0u5@myfirstcluster-reumj.mongodb.net/task_manager?retryWrites=true&w=majority'
+app.config["MONGO_URI"] = os.getenv('MONGO_URI', 'mongodb://localhost')
 #Getting MONGO_URI from the environment variables
 # MONGO_URI = os.getenv("MONGO_URI")
 
