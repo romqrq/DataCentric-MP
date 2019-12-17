@@ -1,12 +1,23 @@
 <!DOCTYPE html>
 <html>
-    <head>
-    
-    </head>
-    <body>
-        <h1>OUTSIDE!</h1>
-        {% block content %}
 
-        {% endblock %}
-    </body>
+<head>
+    <!-- Material icons by google, possible to also use font awesome, no problem. -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+
+</head>
+
+<body>
+	<h1>OUTSIDE!</h1>
+	{% block content %}
+
+	{% endblock %}
+
+
+    <!-- jQueryhere has to go BEFORE Materialize because jQuery needs to be active FIRST -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+</body>
+
 </html>
