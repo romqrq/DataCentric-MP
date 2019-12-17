@@ -10,8 +10,8 @@ from bson.objectid import ObjectId
 app = Flask(__name__)
 #Adding the MONGO DATABASE NAME and the URL linking to that database
 app.config["MONGO_DBNAME"] = 'task_manager'
-# app.config["MONGO_URI"] = 'mongodb+srv://root:R0mul0ng0u5@myfirstcluster-reumj.mongodb.net/task_manager?retryWrites=true&w=majority'
-app.config["MONGO_URI"] = os.getenv('MONGO_URI', 'mongodb://localhost')
+app.config["MONGO_URI"] = 'mongodb+srv://root:R0mul0ng0u5@myfirstcluster-reumj.mongodb.net/task_manager?retryWrites=true&w=majority'
+# app.config["MONGO_URI"] = os.getenv('MONGO_URI', 'mongodb://localhost')
 #Getting MONGO_URI from the environment variables
 # MONGO_URI = os.getenv("MONGO_URI")
 
