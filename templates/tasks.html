@@ -9,6 +9,15 @@
 {% endfor %} -->
 
     <ul class="collapsible" data-collapsible="accordion">
+    
+    <!-- {% for task in tasks %}
+        {{task.task_name}}
+        {{task.category_name}}
+        {{task.task_description}}
+        {{task.is_urgent}}
+        {{task.due_date}}
+        {% endfor %} -->
+
         {% for task in tasks %}
         <li>
             <div class="collapsible-header">
