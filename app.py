@@ -31,7 +31,52 @@ def get_tasks():
 
 @app.route('/add_task')
 def add_task():
-    return render_template('addtask.html')
+    return render_template('addtask.html',
+    categories=mongo.db.categories.find())
+
+#We specified POST here, default is GET
+@app.route('/insert_task', methods=['POST'])
+    #Here, because we're submitting a form and we're submitting using POST, we must refer to the HTTP method
+    #that will be used to deliver the form data
+def insert_task():
+    #get the tasks collection
+    tasks = mongo.db.tasks
+    #Whenever submitting information to a URI or to some web location, it is submitted in the form of a 
+    #REQUEST OBJECT. inside that we say show me the FORM and we convert the form, in this case, TO A DICTIONARY
+    #so it can be easily understood by Mongo.
+    #do an INSERT_ONE and insert
+    tasks.insert_one(request.form.to_dict())
+    #Any of the FORM FIELDS that have data inside them, or are active, will be submitted as part of the form submission
+    #and ultimately, we'll go on to CREATE a new document in our TASK COLLECTION
+
+    #Once this is done, we redirect to get_tasks, so we can view that new task in our collection
+    return redirect(url_for('get_tasks'))
+
+    #IN REAL LIFE, DO SOME VALIDATION both on the HTML and here for REQUIRED FIELDS
+
+@app.route('/edit_task/<task_id>')
+def edit_task(task_id):
+    the_task = mongo.db.tasks.find_one({'_id': ObjectId(task_id)})
+    all_categories = mongo.db.categories.find()
+    return render_template('edittask.html', task=the_task, categories=all_categories)
+
+@app.route('/update_task/<task_id>', methods=["POST"])
+def update_task(task_id):
+    tasks = mongo.db.tasks
+    tasks.update({'_id': ObjectId(task_id)},
+    {
+        'task_name':request.form.get('task_name'),
+        'category_name':request.form.get('category_name'),
+        'task_description':request.form.get('task_description'),
+        'due_date':request.form.get('due_date'),
+        'is_urgent':request.form.get('is_urgent')
+    })
+    return redirect(url_for('get_tasks'))
+
+@app_route('/delete_task/<task_id>')
+def delete_task(task_id):
+    mongo.db.tasks.delete_one({'_id': ObjectId(task_id)})
+    return redirect(urf_for('get_tasks'))
 
 if __name__ == '__main__':
     app.run(host=os.environ.get('IP'),

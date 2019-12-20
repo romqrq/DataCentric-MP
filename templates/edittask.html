@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-<h3>Add Task</h3>
+<h3>Edit Task</h3>
 <div class="row">
     <!-- Find the URL, or use the URL, for a function called insert_task -->
-	<form action="{{ url_for('insert_task') }}" method="POST" class="col s12">
+	<form action="{{ url_for('update_task', task_id=task._id) }}" method="POST" class="col s12">
         <div class="row">
             <div class="row">
                 <div class="input-field col s12">
@@ -11,7 +11,11 @@
                     <select id="category" name="category_name">
                         <option value="" disabled selected>Choose Category</option>
                         {% for cat in categories %}
+                            {% if cat.category_name == task.category_name %}
+                            <option value="{{cat.category_name}}" selected >{{cat.category_name}}</option>
+                            {% else %}
                             <option value="{{cat.category_name}}">{{cat.category_name}}</option>
+                            {% endif %}
                         {% endfor %}
                     </select>
                     <label>Task Category</label>
@@ -19,14 +23,14 @@
             </div>
             <div class="input-field col s12">
                 <i class="material-icons prefix">assignment</i>
-                <input id="task_name" name="task_name" type="text" class="validate">
+                <input id="task_name" name="task_name" type="text" class="validate" value="{{task.task_name}}">
                 <label for="icon_prefix">Task Name</label>
             </div>
 		</div>
 		<div class="row">
 			<div class="input-field col s12">
 				<i class="material-icons prefix">subject</i>
-				<textarea id="task_description" name="task_description" class="materialize-textarea"></textarea>
+				<textarea id="task_description" name="task_description" class="materialize-textarea">{{task.task_description}}</textarea>
 				<label for="icon_telephone">Task Description</label>
 			</div>
 		</div>
@@ -40,18 +44,33 @@
 		<div class="row">
 			<div class="switch">
 				<label>
+                {% if task.is_urgent %}
+                <input id="is_urgent" name="is_urgent" type="checkbox" checked>
+                {% else %}
                 <input id="is_urgent" name="is_urgent" type="checkbox">
+                {% endif %}
                 <span class="lever"></span>
                 Is Urgent
                 </label>
 			</div>
 		</div>
         <div class="row">
-            <button class="btn waves-effect waves-light" type="submit" name="action">Add Task
+            <button class="btn waves-effect waves-light" type="submit" name="action">Edit Task
                 <i class="material-icons right">playlist_add</i>
             </button>
         </div>
 	</form>
 </div>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        due_date = Date.parse('{{task.due_date}}');
+        $('#due_date').pickadate('picker').set('select', due_date, { format: 'dd/mm/yyyy' }).trigger('change')
+    });
+</script>
+<!-- The due_date in line 68 is a normal variable, the 1st due_date in line 69 is the element ID in line 40
+the 2nd due_date is the value from line 68 that we are passing to be SET as 'select'
+GET element with id 'due_date', get the PICKDATE called 'picker' and set our selected date as the due_date
+we've just formatted on line 68
+TRIGGER set-->
 {% endblock %}
